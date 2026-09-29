@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>國語文×金融基礎教育×SEL社會情緒學習</title>
+    <!-- 引入 Google Fonts 典雅字體 (思源宋體) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <!-- 引入 Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        paper: {
+                            DEFAULT: '#FAF8F5',
+                            card: '#FFFFFF',
+                            border: '#E8E2D8',
+                            muted: '#F4F0E8',
+                        },
+                        bamboo: {
+                            DEFAULT: '#2B5F4B',  // 墨竹青
+                            dark: '#1C4233',     // 蒼松黛
+                            light: '#EAF3EE',    // 淺竹露
+                            border: '#CDE1D6',   // 竹節青
+                        },
+                        vermilion: {
+                            DEFAULT: '#A93226',  // 硃砂印泥紅
+                            dark: '#8C271E',
+                            light: '#FBF2F1',
+                        },
+                        ochre: {
+                            DEFAULT: '#9A6B38',  // 古籍金茶色
+                            light: '#FDF7F0',
+                            border: '#EEDDC8',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Noto Serif TC"', 'serif'],
+                        sans: ['"Noto Serif TC"', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- 引入 Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* 全域統一字型：文學典雅思源宋體與書卷平滑渲染 */
+        html, body, button, input, select, textarea, h1, h2, h3, h4, h5, h6, p, span, a, label, li {
+            font-family: 'Noto Serif TC', serif;
+        }
+
+        body {
+            background-color: #FAF8F5;
+            color: #242B28;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .font-classical {
+            font-family: 'Noto Serif TC', serif;
+        }
+
+        /* 移除 details 預設三角箭頭 */
+        details::-webkit-details-marker {
+            display: none;
+        }
+        details summary {
+            list-style: none;
+        }
+
+        /* 文學墨韻微光動畫 */
+        @keyframes literary-glow {
+            0%, 100% { 
+                filter: drop-shadow(0 0 10px rgba(43, 95, 75, 0.6)) drop-shadow(0 0 20px rgba(169, 50, 38, 0.35)); 
+            }
+            50% { 
+                filter: drop-shadow(0 0 12px rgba(154, 107, 56, 0.65)) drop-shadow(0 0 22px rgba(43, 95, 75, 0.45)); 
+            }
+        }
+
+        /* 抖動動畫 */
+        @keyframes jitter {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            10% { transform: translate(-1.5px, -1px) rotate(-1deg); }
+            20% { transform: translate(-1px, 1px) rotate(1deg); }
+            30% { transform: translate(1px, -1px) rotate(0.5deg); }
+            40% { transform: translate(-1px, -1px) rotate(-0.5deg); }
+            50% { transform: translate(1.5px, 1px) rotate(1deg); }
+            60% { transform: translate(-1px, -1.5px) rotate(-1deg); }
+            70% { transform: translate(1px, 1px) rotate(0deg); }
+            80% { transform: translate(-1.5px, 1px) rotate(0.5deg); }
+            90% { transform: translate(1px, -1px) rotate(-0.5deg); }
+        }
+
+        /* 吉祥物滑鼠懸停效果 */
+        .mascot-interactive {
+            transition: transform 0.2s ease-out;
+        }
+        .mascot-interactive:hover {
+            animation: literary-glow 3s ease-in-out infinite, jitter 0.15s linear infinite;
+            cursor: grab;
+        }
+        .mascot-interactive:active {
+            cursor: grabbing;
+        }
+
+        /* 當 details 展開時，時間節點轉為典雅墨竹青 */
+        .timeline-item:has(.course-details[open]) .timeline-dot {
+            background-color: #2B5F4B !important; /* 墨竹青 */
+        }
+        .timeline-item:has(.course-details[open]) .badge-text {
+            color: #1C4233 !important; /* 深蒼黛 */
+        }
+    </style>
+</head>
+<body class="bg-[#FAF8F5] text-slate-800 antialiased min-h-screen flex flex-col selection:bg-bamboo-light selection:text-bamboo-dark">
+
+    <!-- 頁首 Header (古典人文書卷風格) -->
+    <header class="pt-12 pb-6 px-4">
+        <div class="max-w-4xl mx-auto bg-white border border-[#E8E2D8] rounded-2xl p-6 md:p-10 text-center relative shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+            
+            <!-- 主辦單位印章風格標籤 -->
+            <div class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#FAF2F0] text-[#9E2A2B] rounded-full text-xs font-semibold tracking-wider mb-4 border border-[#EAC4C1]">
+                <i class="fa-solid fa-stamp text-[#A93226]"></i> 教育部技高國語文推動中心 × 社團法人台灣公益團體自律聯盟
+            </div>
+
+            <!-- 英文書卷副標 -->
+            <div class="block text-xs font-serif text-[#9A6B38] font-bold tracking-[0.2em] uppercase mb-2">
+                2026 Chinese × Financial Seminar
+            </div>
+            
+            <!-- 主標題 (典雅思源宋體) -->
+            <h1 class="text-2xl md:text-3.5xl font-serif font-black tracking-wide text-[#1E252B] mb-4">
+                國語文 × 金融基礎教育 × SEL 社會情緒學習
+            </h1>
+            
+            <!-- 書卷裝飾中線 (墨竹青漸變古金) -->
+            <div class="w-20 h-1 bg-gradient-to-r from-[#2B5F4B] via-[#9A6B38] to-[#2B5F4B] mx-auto mb-5 rounded-full"></div>
+            
+            <div>
+                <div class="inline-flex flex-wrap items-center justify-center gap-2">
+                    <p class="text-xs md:text-sm text-slate-600 inline-flex items-center gap-2 px-4 py-2 bg-[#FAF8F5] rounded-xl border border-[#E8E2D8]">
+                        <i class="fa-solid fa-feather-pointed text-[#2B5F4B]"></i>
+                        <span class="font-bold text-slate-800">講師：新北市立雙溪高級中學 邱俐瑜</span>
+                    </p>
+                    <a href="https://www.facebook.com/happyliyuchilltiger/" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="text-xs md:text-sm text-slate-700 hover:text-[#2B5F4B] inline-flex items-center gap-2 px-3.5 py-2 bg-white hover:bg-[#FAF8F5] rounded-xl border border-[#E8E2D8] hover:border-[#2B5F4B] transition-all shadow-2xs font-semibold">
+                        <i class="fa-brands fa-facebook text-[#1877F2] text-sm"></i>
+                        <span>快樂鯉魚秋老虎</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-400"></i>
+                    </a>
+                </div>
+                <!-- 上下午場次提示 (晨曦金杏與暮色竹青) -->
+                <div class="mt-3.5 flex flex-wrap justify-center gap-2 text-xs">
+                    <span class="inline-flex items-center px-3.5 py-1 rounded-lg bg-[#FDF7F0] text-[#8C5824] border border-[#EEDDC8] font-medium">
+                        <i class="fa-regular fa-sun mr-1.5 text-[#B87333]"></i> 上午場：08:30~08:50 報到 · 12:40~ 賦歸
+                    </span>
+                    <span class="inline-flex items-center px-3.5 py-1 rounded-lg bg-[#EAF3EE] text-[#1C4233] border border-[#CDE1D6] font-medium">
+                        <i class="fa-regular fa-moon mr-1.5 text-[#2B5F4B]"></i> 下午場：13:10~13:30 報到 · 17:30~ 賦歸
+                    </span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要內容區 -->
+    <main class="flex-grow max-w-4xl mx-auto px-4 py-6 w-full">
+        <!-- 核心內容卡片 -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 md:p-10 shadow-sm mb-12">
+
+            <!-- 標題說明區 -->
+            <div class="mb-8 border-b border-slate-100 pb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <h2 class="text-lg font-serif font-bold text-[#1E252B] flex items-center gap-2.5">
+                        <i class="fa-solid fa-scroll text-[#2B5F4B]"></i>
+                        研習主題與課程教材架構
+                    </h2>
+                    <p class="text-slate-500 text-xs mt-1.5">
+                        本大綱單元提供詳盡的文學跨領域教學策略與評量設計。
+                    </p>
+                </div>
+                <!-- 操作控制區：場次切換與收合展開 -->
+                <div class="flex flex-wrap items-center gap-2 self-start sm:self-auto">
+                    <!-- 場次切換按鈕群 (宣紙古典風) -->
+                    <div class="inline-flex rounded-xl border border-[#E8E2D8] bg-[#F4F0E8]/70 p-1 text-xs font-semibold text-slate-700 shadow-2xs" role="group">
+                        <button type="button" class="session-btn px-3 py-1 rounded-lg transition-all bg-white text-[#2B5F4B] shadow-2xs font-serif font-bold" data-session="both">
+                            <i class="fa-solid fa-arrows-split-up-and-left mr-1 text-[#2B5F4B]"></i>雙場次對照
+                        </button>
+                        <button type="button" class="session-btn px-3 py-1 rounded-lg transition-all text-slate-600 hover:text-[#8C5824]" data-session="morning">
+                            <i class="fa-regular fa-sun mr-1 text-[#B87333]"></i>上午場 (08:30~12:40)
+                        </button>
+                        <button type="button" class="session-btn px-3 py-1 rounded-lg transition-all text-slate-600 hover:text-[#1C4233]" data-session="afternoon">
+                            <i class="fa-regular fa-moon mr-1 text-[#2B5F4B]"></i>下午場 (13:10~17:30)
+                        </button>
+                    </div>
+                    <!-- 展開/收合控制按鈕 -->
+                    <button id="toggle-all-btn" class="text-xs font-semibold text-slate-700 hover:text-[#2B5F4B] border border-[#E8E2D8] hover:border-[#2B5F4B] px-3.5 py-1.5 bg-[#FAF8F5] rounded-xl transition-all flex items-center justify-center gap-1.5 font-serif shadow-2xs">
+                        <i class="fa-solid fa-minimize"></i>
+                        <span>全部收合</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 時間軸容器 (簡約專業線條) -->
+            <div class="relative border-l border-[#E2DAD0] ml-3 md:ml-6 space-y-6 pb-4">
+                
+                <!-- 報到 (上午 08:30~08:50 / 下午 13:10~13:30) -->
+                <div class="relative pl-6 md:pl-8">
+                    <span class="absolute -left-[5.5px] top-1.5 h-2.5 w-2.5 rounded-full bg-[#D5CEC2] ring-4 ring-[#FAF8F5]"></span>
+                    <div class="flex flex-col md:flex-row md:items-center gap-3">
+                        <span class="session-badge inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold bg-[#FAF8F5] text-slate-700 border border-[#E8E2D8] w-fit"
+                              data-both="上午 08:30 ~ 08:50 ｜ 下午 13:10 ~ 13:30"
+                              data-morning="08:30 ~ 08:50"
+                              data-afternoon="13:10 ~ 13:30">
+                            <i class="fa-regular fa-clock mr-1.5 text-[#2B5F4B]"></i>
+                            <span class="badge-time-text">上午 08:30 ~ 08:50 ｜ 下午 13:10 ~ 13:30</span>
+                        </span>
+                        <h3 class="text-sm font-semibold text-slate-700">學員報到、領取課堂研習講義 (20分鐘)</h3>
+                    </div>
+                </div>
+
+                <!-- 課程導論 (上午 08:50~09:10 / 下午 13:30~13:50) -->
+                <div class="timeline-item relative pl-6 md:pl-8">
+                    <span class="timeline-dot absolute -left-1.5 top-2 z-10 flex h-3 w-3 items-center justify-center rounded-full bg-slate-700 ring-4 ring-white transition-colors duration-200"></span>
+                    <details class="course-details border border-slate-200 rounded-xl bg-white overflow-hidden shadow-sm transition-all duration-200 hover:border-slate-300" open>
+                        <summary class="flex justify-between items-center font-semibold px-5 py-4 bg-slate-50/80 border-b border-slate-200/80 cursor-pointer select-none hover:bg-slate-50 transition-colors">
+                            <div class="flex flex-col gap-1">
+                                <span class="badge-text session-badge text-[11px] text-slate-700 font-bold tracking-wider flex items-center gap-1.5 transition-colors duration-200"
+                                      data-both="上午 08:50 ~ 09:10 ｜ 下午 13:30 ~ 13:50 · 課程導論 (20分鐘)"
+                                      data-morning="08:50 ~ 09:10 · 課程導論 (20分鐘)"
+                                      data-afternoon="13:30 ~ 13:50 · 課程導論 (20分鐘)">
+                                    <i class="fa-solid fa-compass"></i>
+                                    <span class="badge-time-text">上午 08:50 ~ 09:10 ｜ 下午 13:30 ~ 13:50 · 課程導論 (20分鐘)</span>
+                                </span>
+                                <span class="text-base text-slate-900 font-bold">金融基礎教育架構分析與教材資源運用</span>
+                            </div>
+                            <span class="text-slate-400 text-xs ml-2"><i class="fa-solid fa-chevron-down transition-transform duration-200"></i></span>
+                        </summary>
+                        <div class="p-5 text-slate-600 space-y-4 text-sm leading-relaxed">
+                            <p class="text-emerald-800 font-medium border-l-2 border-emerald-500 pl-3 bg-emerald-50/30 py-1.5 rounded-r">
+                                核心導向：緊扣 108 課綱與金融素養指標，確保教學創新不偏離本質。
+                            </p>
+                            <div>
+                                <h4 class="font-bold text-slate-800 mb-1 flex items-center gap-2"><i class="fa-solid fa-route text-slate-400"></i> 教學地圖核心觀念</h4>
+                                <p>金融教育的核心目標在於培養學生的「財務健全度（Financial Well-being）」。108 課綱著重於培養<strong>「消費抉擇」、「儲蓄與信用維護」、「投資風險評估」及「消費者權益防範」</strong>等四大日常素養能力，而非死記繁複名詞。</p>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                                <h4 class="font-bold text-slate-800 mb-2 flex items-center gap-1.5"><i class="fa-solid fa-link text-slate-400"></i> 推薦官方資源庫</h4>
+                                <a href="https://rm.ib.gov.tw/pages/FKLearning_new.aspx?Dir=010000000000000000" target="_blank" class="text-emerald-700 hover:text-emerald-900 inline-flex items-center gap-1.5 font-bold text-xs">
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i> 風險管理與保險教育推廣入口網－金融基礎教育
+                                </a>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- 教學創新 SEL 結合 (上午 09:10~10:40 / 下午 13:50~15:20) -->
+                <div class="timeline-item relative pl-6 md:pl-8">
+                    <span class="timeline-dot absolute -left-1.5 top-2 z-10 flex h-3 w-3 items-center justify-center rounded-full bg-slate-700 ring-4 ring-white transition-colors duration-200"></span>
+                    <details class="course-details border border-slate-200 rounded-xl bg-white overflow-hidden shadow-sm transition-all duration-200 hover:border-slate-300" open>
+                        <summary class="flex justify-between items-center font-semibold px-5 py-4 bg-slate-50/80 border-b border-slate-200/80 cursor-pointer select-none hover:bg-slate-50 transition-colors">
+                            <div class="flex flex-col gap-1">
+                                <span class="badge-text session-badge text-[11px] text-slate-700 font-bold tracking-wider flex items-center gap-1.5 transition-colors duration-200"
+                                      data-both="上午 09:10 ~ 10:40 ｜ 下午 13:50 ~ 15:20 · 教學創新 (90分鐘)"
+                                      data-morning="09:10 ~ 10:40 · 教學創新 (90分鐘)"
+                                      data-afternoon="13:50 ~ 15:20 · 教學創新 (90分鐘)">
+                                    <i class="fa-solid fa-gears"></i>
+                                    <span class="badge-time-text">上午 09:10 ~ 10:40 ｜ 下午 13:50 ~ 15:20 · 教學創新 (90分鐘)</span>
+                                </span>
+                                <span class="text-base text-slate-900 font-bold">金融基礎教育結合社會情緒學習 (SEL)</span>
+                            </div>
+                            <span class="text-slate-400 text-xs ml-2"><i class="fa-solid fa-chevron-down transition-transform duration-200"></i></span>
+                        </summary>
+                        <div class="p-5 text-slate-600 space-y-4 text-sm leading-relaxed">
+                            <p class="text-slate-800 font-medium border-l-2 border-slate-500 pl-3 bg-slate-50 py-1.5 rounded-r">
+                                情境切入：理財決策往往受情緒與同儕影響，引入 SEL 有助於提升決策品質。
+                            </p>
+                            <div>
+                                <h4 class="font-bold text-slate-800 mb-1 flex items-center gap-2"><i class="fa-solid fa-sliders text-slate-400"></i> 為什麼金融教育需要 SEL？</h4>
+                                <p>消費決策在本質上是一個情緒調節問題。引入 SEL 教導學生從「自我覺察（如衝動消費）」與「人際關係（如跟風消費的同儕壓力）」出發，將抽象的金融概念與學生的真實生活經驗進行深度連結。</p>
+                            </div>
+                            <div class="bg-[#FDF7F0]/80 p-5 rounded-xl border border-[#EEDDC8]">
+                                <h4 class="font-serif font-bold text-[#1E252B] mb-2 flex items-center gap-2"><i class="fa-regular fa-clipboard text-[#9A6B38]"></i> 課堂經典實作活動：【情緒記帳法】與文學情境對照舉例</h4>
+                                <p class="mb-2.5 text-xs text-slate-600 leading-relaxed">引導學生透過「情緒記帳」覺察消費決策與心境調節的深層連結，並對照經典文學文本中的經濟行為：</p>
+                                <ol class="list-decimal list-inside space-y-1.5 text-xs text-slate-700 bg-white p-3.5 rounded-lg border border-[#E8E2D8]">
+                                    <li>詳實記錄消費金額、品項與預算來源。</li>
+                                    <li>標記<strong>「決策當下的心理狀態」</strong>（如：排場焦慮、跟風從眾、親情愧疚、寂寞或虛榮）。</li>
+                                    <li>定期回顧滿意度與長期效益，辨識出哪些消費屬於填補「心理飢餓」或「人際壓力」的非理性支出。</li>
+                                </ol>
+                                <!-- 文學文本情境對照舉例區塊 -->
+                                <div class="mt-3.5 p-3.5 bg-white rounded-lg border border-[#E0D5C7] text-xs text-slate-700 space-y-2">
+                                    <div class="font-serif font-bold text-[#8C5824] flex items-center gap-1.5">
+                                        <i class="fa-solid fa-scroll text-[#9A6B38]"></i> 文學文本情境對照舉例：
+                                    </div>
+                                    <div class="space-y-2 pl-1 text-[11px] leading-relaxed text-slate-600">
+                                        <p><strong>・《紅樓夢》大觀園姑娘的重複採買：</strong>各房姑娘每月領有二兩月銀，買辦又另外申領頭油脂粉費，卻因「維持體面」與「買辦搪塞交貨」，使各房私下自費重複買辦。探春從情緒記帳的角度盤點，洞察此為家族體面文化與採購漏洞造成的非理性「面子與情緒開銷」，進而推行開源節流。</p>
+                                        <p><strong>・黃春明《放生》〈死去活來〉的突發開銷：</strong>子孫長年在都市打拼，唯有老嫗粉妹傳出病危時才匆促請假返鄉。面對多次「死去活來」，子女產生舟車勞頓與突發花費的愧疚與疲憊，生動展現未預先做好長照與醫療風險規劃時，家庭情緒與財務支出的雙重拉扯。</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 融入啟發專區 (古籍宣紙與墨竹色系) -->
+                            <div class="bg-gradient-to-br from-[#F4F8F5] via-[#FAF8F5] to-[#FDF7F0] p-5 rounded-2xl border border-[#CDE1D6] shadow-xs">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                                    <div>
+                                        <h4 class="font-serif font-bold text-[#1C4233] flex items-center gap-2 text-sm">
+                                            <i class="fa-solid fa-book-bookmark text-[#2B5F4B]"></i>
+                                            融入啟發：經典選文跨領域教學實踐指引
+                                        </h4>
+                                        <p class="text-xs text-slate-500 mt-1">
+                                            將金融基礎教育與 SEL 巧妙融入經典選文與跨領域素養教學，引導學生從文學作品中體察經濟決策與情緒素養：
+                                        </p>
+                                    </div>
+                                    <a href="https://gongminshenliyuchiutiger.github.io/chinese-financial-sel/" 
+                                       target="_blank" 
+                                       rel="noopener noreferrer" 
+                                       class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[#2B5F4B] hover:bg-[#1E4335] text-white rounded-lg text-xs font-semibold shadow-xs transition-all hover:shadow-md shrink-0 self-start sm:self-auto font-serif">
+                                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                        <span>線上教材整合系統</span>
+                                    </a>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 text-xs">
+                                    <!-- 篇章一：賈探春敏慧興利 -->
+                                    <div class="bg-white p-4 rounded-xl border border-emerald-100 shadow-2xs flex flex-col justify-between">
+                                        <div>
+                                            <div class="flex items-center gap-1.5 text-emerald-900 font-bold mb-1 text-sm">
+                                                <i class="fa-solid fa-seedling text-emerald-600"></i>
+                                                <span>〈賈探春敏慧興利〉</span>
+                                            </div>
+                                            <p class="text-[11px] text-slate-400 mb-3 font-medium">曹雪芹 · 節選自《紅樓夢》第五十六回</p>
+                                            <div class="space-y-2 text-slate-600 leading-relaxed">
+                                                <div>
+                                                    <strong class="text-slate-800 block mb-0.5"><i class="fa-solid fa-coins text-amber-500 mr-1"></i> 金融教育融入：</strong>
+                                                    盤查家族虧空盲點、免除買辦重複請領之「頭油脂粉冗費」（金錢規劃）；推動大觀園資產承包與利益共享分潤制，轉化沉沒資產為穩定現金流（理財投資）。
+                                                </div>
+                                                <div>
+                                                    <strong class="text-slate-800 block mb-0.5"><i class="fa-solid fa-heart-pulse text-rose-500 mr-1"></i> SEL 核心能力：</strong>
+                                                    「負責任的決定」面對家族虧空勇於改革；平兒居中維護鳳姐權威之同理折衝、寶釵以利共好化解基層眼紅怨懟之溝通藝術。
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 篇章二：死去活來 -->
+                                    <div class="bg-white p-4 rounded-xl border border-emerald-100 shadow-2xs flex flex-col justify-between">
+                                        <div>
+                                            <div class="flex items-center gap-1.5 text-emerald-900 font-bold mb-1 text-sm">
+                                                <i class="fa-solid fa-mountain-sun text-emerald-600"></i>
+                                                <span>〈死去活來〉</span>
+                                            </div>
+                                            <p class="text-[11px] text-slate-400 mb-3 font-medium">黃春明 · 收錄於小說集《放生》</p>
+                                            <div class="space-y-2 text-slate-600 leading-relaxed">
+                                                <div>
+                                                    <strong class="text-slate-800 block mb-0.5"><i class="fa-solid fa-shield-heart text-blue-500 mr-1"></i> 金融教育融入：</strong>
+                                                    探討超高齡社會長照財務負擔、健康醫療與高齡安養保險之風險轉嫁（風險管理）；防範突發失能對家庭經濟與信貸的系統性衝擊。
+                                                </div>
+                                                <div>
+                                                    <strong class="text-slate-800 block mb-0.5"><i class="fa-solid fa-users text-indigo-500 mr-1"></i> SEL 核心能力：</strong>
+                                                    「社會覺察」體認偏鄉獨居長者晚景之無奈；同理照護者面臨經濟與陪伴的雙重耗竭，反思家庭代際溝通與心理界線調適。
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 篇章三：大同與小康 -->
+                                    <div class="bg-white p-4 rounded-xl border border-emerald-100 shadow-2xs flex flex-col justify-between">
+                                        <div>
+                                            <div class="flex items-center gap-1.5 text-emerald-900 font-bold mb-1 text-sm">
+                                                <i class="fa-solid fa-landmark text-emerald-600"></i>
+                                                <span>〈大同與小康〉</span>
+                                            </div>
+                                            <p class="text-[11px] text-slate-400 mb-3 font-medium">《禮記》 · 出自《禮記・禮運》篇首</p>
+                                            <div class="space-y-2 text-slate-600 leading-relaxed">
+                                                <div>
+                                                    <strong class="text-slate-800 block mb-0.5"><i class="fa-solid fa-scale-balanced text-emerald-600 mr-1"></i> 金融教育融入：</strong>
+                                                    公共財政本質與社會安全機制健全度；「老有所終，壯有所用，幼有所長」之公共福利經濟學，探討永續年金、賦稅制度與資源公平分配。
+                                                </div>
+                                                <div>
+                                                    <strong class="text-slate-800 block mb-0.5"><i class="fa-solid fa-hands-holding-circle text-teal-600 mr-1"></i> SEL 核心能力：</strong>
+                                                    「公民責任意識」超越個人私利的群體共好關懷；思辨私有產權與公共利益平衡，培養在複雜社會情境中做出利他協同決策之格局。
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- 工具協作 (上午 10:40~11:00 / 下午 15:20~15:40) -->
+                <div class="timeline-item relative pl-6 md:pl-8">
+                    <span class="timeline-dot absolute -left-1.5 top-2 z-10 flex h-3 w-3 items-center justify-center rounded-full bg-slate-700 ring-4 ring-white transition-colors duration-200"></span>
+                    <details class="course-details border border-slate-200 rounded-xl bg-white overflow-hidden shadow-sm transition-all duration-200 hover:border-slate-300" open>
+                        <summary class="flex justify-between items-center font-semibold px-5 py-4 bg-slate-50/80 border-b border-slate-200/80 cursor-pointer select-none hover:bg-slate-50 transition-colors">
+                            <div class="flex flex-col gap-1">
+                                <span class="badge-text session-badge text-[11px] text-slate-700 font-bold tracking-wider flex items-center gap-1.5 transition-colors duration-200"
+                                      data-both="上午 10:40 ~ 11:00 ｜ 下午 15:20 ~ 15:40 · 工具協作 (20分鐘)"
+                                      data-morning="10:40 ~ 11:00 · 工具協作 (20分鐘)"
+                                      data-afternoon="15:20 ~ 15:40 · 工具協作 (20分鐘)">
+                                    <i class="fa-solid fa-robot"></i>
+                                    <span class="badge-time-text">上午 10:40 ~ 11:00 ｜ 下午 15:20 ~ 15:40 · 工具協作 (20分鐘)</span>
+                                </span>
+                                <span class="text-base text-slate-900 font-bold">生成式 AI 工作流與數位工具協作</span>
+                            </div>
+                            <span class="text-slate-400 text-xs ml-2"><i class="fa-solid fa-chevron-down transition-transform duration-200"></i></span>
+                        </summary>
+                        <div class="p-5 text-slate-600 space-y-4 text-sm leading-relaxed">
+                            <p class="text-slate-800 font-medium border-l-2 border-slate-500 pl-3 bg-slate-50 py-1.5 rounded-r">
+                                備課賦能：提供生成式 AI 工作流，大幅降低教案編寫與教材設計的門檻。
+                            </p>
+                            <div>
+                                <h4 class="font-bold text-slate-800 mb-1 flex items-center gap-2"><i class="fa-solid fa-bolt text-slate-400"></i> AI 工作流協作與提示詞設計</h4>
+                                <p>教導學員利用生成式 AI 作為協作夥伴，快速產出符合課綱標準之教學大綱、生活化教案情境與學習單，大幅節省備課時間，使教師得以將精力專注於教學活動引導之品質精進。</p>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- 實作沙盒與試教發表 (上午 11:00~12:40 / 下午 15:40~17:30，實作至賦歸) -->
+                <div class="timeline-item relative pl-6 md:pl-8">
+                    <span class="timeline-dot absolute -left-1.5 top-2 z-10 flex h-3 w-3 items-center justify-center rounded-full bg-slate-700 ring-4 ring-white transition-colors duration-200"></span>
+                    <details class="course-details border border-slate-200 rounded-xl bg-white overflow-hidden shadow-sm transition-all duration-200 hover:border-slate-300" open>
+                        <summary class="flex justify-between items-center font-semibold px-5 py-4 bg-slate-50/80 border-b border-slate-200/80 cursor-pointer select-none hover:bg-slate-50 transition-colors">
+                            <div class="flex flex-col gap-1">
+                                <span class="badge-text session-badge text-[11px] text-slate-700 font-bold tracking-wider flex items-center gap-1.5 transition-colors duration-200"
+                                      data-both="上午 11:00 ~ 12:40 ｜ 下午 15:40 ~ 17:30 · 實作沙盒與試教發表"
+                                      data-morning="11:00 ~ 12:40 · 實作沙盒與試教發表 (100分鐘)"
+                                      data-afternoon="15:40 ~ 17:30 · 實作沙盒與試教發表 (110分鐘)">
+                                    <i class="fa-solid fa-people-group"></i>
+                                    <span class="badge-time-text">上午 11:00 ~ 12:40 ｜ 下午 15:40 ~ 17:30 · 實作沙盒與試教發表</span>
+                                </span>
+                                <span class="text-base text-slate-900 font-bold">金融基礎教育創新課程設計實作沙盒與試教發表</span>
+                            </div>
+                            <span class="text-slate-400 text-xs ml-2"><i class="fa-solid fa-chevron-down transition-transform duration-200"></i></span>
+                        </summary>
+                        <div class="p-5 text-slate-600 space-y-4 text-sm leading-relaxed">
+                            <p class="text-slate-800 font-medium border-l-2 border-slate-500 pl-3 bg-slate-50 py-1.5 rounded-r">
+                                做中學（Learning by doing）：結合 ORID 焦點討論法，進行小組教案共創、實作試教與專業交流。
+                            </p>
+                            <div>
+                                <h4 class="font-serif font-bold text-[#1E252B] mb-2 flex items-center gap-2">
+                                    <i class="fa-solid fa-pen-ruler text-[#2B5F4B]"></i> 探究式提問設計：ORID 焦點討論法（以經典文本為示範舉例）
+                                </h4>
+                                <p class="text-xs text-slate-500 mb-3 leading-relaxed">
+                                    以〈賈探春敏慧興利〉大觀園改革為探究案例，引導學生由淺入深理解財務數字背後的制度邏輯與人際情緒：
+                                </p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs mb-4">
+                                    <!-- O -->
+                                    <div class="p-3.5 bg-[#FAF8F5] rounded-xl border border-[#E8E2D8]">
+                                        <span class="font-serif font-bold text-[#1C4233] block mb-1.5 flex items-center gap-2">
+                                            <span class="w-5 h-5 rounded-full bg-[#2B5F4B] text-white text-[10px] inline-flex items-center justify-center font-sans shadow-2xs">O</span>
+                                            Objective (客觀事實 · 文本數據與情境)
+                                        </span>
+                                        <p class="text-slate-600 leading-relaxed pl-7">
+                                            「在〈賈探春敏慧興利〉中，探春盤點出姑娘頭油脂粉每月重複花費多少兩？賴大家的花園一年能產出多少銀子？大觀園預計每年可產出多少利息？」
+                                        </p>
+                                    </div>
+                                    <!-- R -->
+                                    <div class="p-3.5 bg-[#FAF8F5] rounded-xl border border-[#E8E2D8]">
+                                        <span class="font-serif font-bold text-[#1C4233] block mb-1.5 flex items-center gap-2">
+                                            <span class="w-5 h-5 rounded-full bg-[#9E2A2B] text-white text-[10px] inline-flex items-center justify-center font-sans shadow-2xs">R</span>
+                                            Reflective (情緒反應 · 角色同理與心理覺察)
+                                        </span>
+                                        <p class="text-slate-600 leading-relaxed pl-7">
+                                            「面對賈府日漸虧空的窘境與舊僕買辦的利益盤根錯節，若你是探春，推動改革時內心會有何種壓力？平兒聽聞後又如何以同理心巧妙折衝協調？」
+                                        </p>
+                                    </div>
+                                    <!-- I -->
+                                    <div class="p-3.5 bg-[#FAF8F5] rounded-xl border border-[#E8E2D8]">
+                                        <span class="font-serif font-bold text-[#1C4233] block mb-1.5 flex items-center gap-2">
+                                            <span class="w-5 h-5 rounded-full bg-[#9A6B38] text-white text-[10px] inline-flex items-center justify-center font-sans shadow-2xs">I</span>
+                                            Interpretive (詮釋發現 · 經濟思辨與共好機制)
+                                        </span>
+                                        <p class="text-slate-600 leading-relaxed pl-7">
+                                            「從『資產活化』與『利益共享』角度看，寶釵為何力主將餘利分給未得差事的巡夜老僕？這如何化解同儕眼紅並兼顧組織激勵制度？」
+                                        </p>
+                                    </div>
+                                    <!-- D -->
+                                    <div class="p-3.5 bg-[#FAF8F5] rounded-xl border border-[#E8E2D8]">
+                                        <span class="font-serif font-bold text-[#1C4233] block mb-1.5 flex items-center gap-2">
+                                            <span class="w-5 h-5 rounded-full bg-[#2B5F4B] text-white text-[10px] inline-flex items-center justify-center font-sans shadow-2xs">D</span>
+                                            Decisional (行動決定 · 跨領域教學與生活轉化)
+                                        </span>
+                                        <p class="text-slate-600 leading-relaxed pl-7">
+                                            「如果由學員小組結合此文本，能為現代學生設計出哪三個將『文學文本情境』轉化為『生活財務與情緒決策』的具體探究任務？」
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 微教案設計評量指標 (重新排版：透氣結構化檢核卡) -->
+                            <div class="bg-[#FAF8F5] p-5 md:p-6 rounded-2xl border border-[#E8E2D8]">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-[#E8E2D8]/80">
+                                    <h4 class="font-serif font-bold text-[#1E252B] flex items-center gap-2 text-sm">
+                                        <i class="fa-regular fa-square-check text-[#2B5F4B] text-base"></i>
+                                        微教案設計評量指標（五大檢核重點）
+                                    </h4>
+                                    <span class="text-[11px] font-serif text-[#9A6B38] font-semibold bg-[#FDF7F0] px-3 py-1 rounded-full border border-[#EEDDC8] w-fit">
+                                        小組共創檢核項目
+                                    </span>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs">
+                                    <!-- 指標 1 -->
+                                    <div class="bg-white p-4 rounded-xl border border-[#E4DDD3] shadow-2xs hover:border-[#2B5F4B]/50 transition-colors">
+                                        <div class="flex items-center gap-2.5 mb-1.5">
+                                            <span class="w-5 h-5 rounded-md bg-[#2B5F4B] text-white text-[11px] font-bold inline-flex items-center justify-center shrink-0">1</span>
+                                            <strong class="font-serif text-[#1C4233] text-[13px]">核心主題指標</strong>
+                                        </div>
+                                        <p class="text-slate-600 leading-relaxed pl-7 text-[11.5px]">
+                                            是否對應明確之金融素養指標（如金錢規劃、風險管理、信用維護等生活理財核心素養）。
+                                        </p>
+                                    </div>
+
+                                    <!-- 指標 2 -->
+                                    <div class="bg-white p-4 rounded-xl border border-[#E4DDD3] shadow-2xs hover:border-[#2B5F4B]/50 transition-colors">
+                                        <div class="flex items-center gap-2.5 mb-1.5">
+                                            <span class="w-5 h-5 rounded-md bg-[#2B5F4B] text-white text-[11px] font-bold inline-flex items-center justify-center shrink-0">2</span>
+                                            <strong class="font-serif text-[#1C4233] text-[13px]">情境脈絡設計</strong>
+                                        </div>
+                                        <p class="text-slate-600 leading-relaxed pl-7 text-[11.5px]">
+                                            是否具備貼近學生日常生活、或富含人文思辨厚度的文學角色情境脈絡。
+                                        </p>
+                                    </div>
+
+                                    <!-- 指標 3 -->
+                                    <div class="bg-white p-4 rounded-xl border border-[#E4DDD3] shadow-2xs hover:border-[#2B5F4B]/50 transition-colors">
+                                        <div class="flex items-center gap-2.5 mb-1.5">
+                                            <span class="w-5 h-5 rounded-md bg-[#2B5F4B] text-white text-[11px] font-bold inline-flex items-center justify-center shrink-0">3</span>
+                                            <strong class="font-serif text-[#1C4233] text-[13px]">探究提問設計</strong>
+                                        </div>
+                                        <p class="text-slate-600 leading-relaxed pl-7 text-[11.5px]">
+                                            是否活用 ORID 架構循序引導學生主動思辨與同理，而非直接給予單一答案。
+                                        </p>
+                                    </div>
+
+                                    <!-- 指標 4 -->
+                                    <div class="bg-white p-4 rounded-xl border border-[#E4DDD3] shadow-2xs hover:border-[#2B5F4B]/50 transition-colors">
+                                        <div class="flex items-center gap-2.5 mb-1.5">
+                                            <span class="w-5 h-5 rounded-md bg-[#2B5F4B] text-white text-[11px] font-bold inline-flex items-center justify-center shrink-0">4</span>
+                                            <strong class="font-serif text-[#1C4233] text-[13px]">課堂活動評量</strong>
+                                        </div>
+                                        <p class="text-slate-600 leading-relaxed pl-7 text-[11.5px]">
+                                            是否包含多元可驗證、具實踐意義且可檢驗學習成效之課堂評量機制。
+                                        </p>
+                                    </div>
+
+                                    <!-- 指標 5 (跨欄重點卡片) -->
+                                    <div class="bg-gradient-to-r from-[#FDF7F0] via-white to-[#FDF7F0] p-4 rounded-xl border border-[#EEDDC8] shadow-2xs md:col-span-2">
+                                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-1.5">
+                                            <div class="flex items-center gap-2.5">
+                                                <span class="w-5 h-5 rounded-md bg-[#9A6B38] text-white text-[11px] font-bold inline-flex items-center justify-center shrink-0">5</span>
+                                                <strong class="font-serif text-[#8C5824] text-[13px]">經典文本結合（推薦融入）</strong>
+                                            </div>
+                                            <span class="text-[10px] text-[#A93226] font-semibold bg-[#FAF2F0] px-2.5 py-0.5 rounded-full border border-[#EAC4C1] w-fit">
+                                                跨領域亮點推薦
+                                            </span>
+                                        </div>
+                                        <p class="text-slate-700 leading-relaxed pl-7 text-[11.5px]">
+                                            推薦靈活選用〈賈探春敏慧興利〉、〈死去活來〉或〈大同與小康〉等課文作為情境教學切入點，促進國語文素養與生活財經智慧之深度對話。
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pt-3 border-t border-[#E8E2D8]">
+                                <h4 class="font-serif font-bold text-[#1E252B] mb-2 flex items-center gap-2"><i class="fa-solid fa-comments text-[#9A6B38]"></i> 小組成果演示與試教回饋（推薦文本選題方向）</h4>
+                                <p class="text-slate-600 mb-2.5 leading-relaxed">安排各組學員進行教學設計演示，由講師及同行進行雙向評估與建議。學員可擇一經典文本方向開展教案原型：</p>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-[11px] mb-3">
+                                    <div class="p-2.5 bg-white rounded-lg border border-[#E0D7CB] shadow-2xs">
+                                        <strong class="font-serif text-[#1C4233] block mb-1"><i class="fa-solid fa-feather text-[#2B5F4B] mr-1"></i> 方向一：紅樓大觀園</strong>
+                                        〈賈探春敏慧興利〉大觀園預算革新與激勵機制（金錢規劃 × 負責任的決定）
+                                    </div>
+                                    <div class="p-2.5 bg-white rounded-lg border border-[#E0D7CB] shadow-2xs">
+                                        <strong class="font-serif text-[#1C4233] block mb-1"><i class="fa-solid fa-feather text-[#A93226] mr-1"></i> 方向二：鄉土小說放生</strong>
+                                        〈死去活來〉偏鄉長照困境與醫療風險防範（風險管理 × 社會覺察同理心）
+                                    </div>
+                                    <div class="p-2.5 bg-white rounded-lg border border-[#E0D7CB] shadow-2xs">
+                                        <strong class="font-serif text-[#1C4233] block mb-1"><i class="fa-solid fa-feather text-[#9A6B38] mr-1"></i> 方向三：禮記禮運篇</strong>
+                                        〈大同與小康〉全民社會福利安全網與賦稅思辨（公共財政 × 公民意識與共好）
+                                    </div>
+                                </div>
+                                <span class="text-xs text-slate-500 font-semibold flex items-center gap-1.5">
+                                    <i class="fa-solid fa-users-viewfinder text-[#2B5F4B]"></i> 分組演示、同儕互評與講師即時精準反饋
+                                </span>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- 賦歸 (上午 12:40~ / 下午 17:30~) -->
+                <div class="relative pl-6 md:pl-8">
+                    <span class="absolute -left-[5.5px] top-1.5 h-2.5 w-2.5 rounded-full bg-[#D5CEC2] ring-4 ring-[#FAF8F5]"></span>
+                    <div class="flex flex-col md:flex-row md:items-center gap-3">
+                        <span class="session-badge inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold bg-[#FAF8F5] text-slate-700 border border-[#E8E2D8] w-fit"
+                              data-both="上午 12:40 ~ ｜ 下午 17:30 ~"
+                              data-morning="12:40 ~"
+                              data-afternoon="17:30 ~">
+                            <i class="fa-solid fa-house mr-1.5 text-[#2B5F4B]"></i>
+                            <span class="badge-time-text">上午 12:40 ~ ｜ 下午 17:30 ~</span>
+                        </span>
+                        <h3 class="text-sm font-semibold text-slate-600">賦歸 / 研習圓滿結束</h3>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- 頁尾 Footer (古典人文書卷風格) -->
+    <footer class="bg-white text-slate-600 py-12 border-t border-[#E8E2D8]">
+        <div class="max-w-4xl mx-auto px-4">
+            <!-- 組織單位區塊 (指導、主辦、協辦) -->
+            <div class="bg-[#FAF8F5] border border-[#E8E2D8] rounded-2xl p-6 md:p-8 mb-8 text-xs leading-relaxed space-y-4 shadow-sm">
+                <!-- 指導單位 -->
+                <div class="flex flex-col sm:flex-row sm:items-baseline gap-1.5 sm:gap-3">
+                    <span class="inline-flex items-center gap-1.5 font-serif font-bold text-[#1E252B] shrink-0 min-w-[76px]">
+                        <i class="fa-solid fa-landmark text-[#2B5F4B] text-[11px]"></i> 指導單位：
+                    </span>
+                    <span class="text-slate-600">教育部國民及學前教育署、金融監督管理委員會保險局</span>
+                </div>
+
+                <!-- 主辦單位 -->
+                <div class="flex flex-col sm:flex-row sm:items-baseline gap-1.5 sm:gap-3 pt-3.5 border-t border-[#E8E2D8]/80">
+                    <span class="inline-flex items-center gap-1.5 font-serif font-bold text-[#1E252B] shrink-0 min-w-[76px]">
+                        <i class="fa-solid fa-building-columns text-[#2B5F4B] text-[11px]"></i> 主辦單位：
+                    </span>
+                    <span class="text-slate-600">國語文推動中心（高雄市立高雄高級工業職業學校）、社團法人台灣公益團體自律聯盟</span>
+                </div>
+
+                <!-- 協辦單位 -->
+                <div class="flex flex-col sm:flex-row sm:items-start gap-1.5 sm:gap-3 pt-3.5 border-t border-[#E8E2D8]/80">
+                    <span class="inline-flex items-center gap-1.5 font-serif font-bold text-[#1E252B] shrink-0 min-w-[76px] pt-0.5">
+                        <i class="fa-solid fa-handshake-angle text-[#2B5F4B] text-[11px]"></i> 協辦單位：
+                    </span>
+                    <ul class="text-slate-600 space-y-1">
+                        <li>商業與管理群科中心（臺中市立臺中家事商業高級中等學校）</li>
+                        <li>家政群科中心（國立嘉義高級家事職業學校）</li>
+                        <li>高雄市立三民高級家事商業職業學校</li>
+                        <li>臺中市私立明道高級中學</li>
+                        <li>臺北市立松山高級商業家事職業學校</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 講師連結與版權宣告 -->
+            <div class="flex flex-col items-center gap-4 text-center">
+                <!-- 講師專業連結 -->
+                <a href="https://www.facebook.com/happyliyuchilltiger/" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="group inline-flex items-center gap-2.5 text-slate-700 hover:text-[#2B5F4B] bg-[#FAF8F5] hover:bg-[#F4F0E8] px-4 py-2 rounded-xl border border-[#E8E2D8] text-xs font-semibold transition-all shadow-sm">
+                    <i class="fa-brands fa-facebook text-base text-[#1877F2]"></i>
+                    <span>快樂鯉魚秋老虎</span>
+                </a>
+                
+                <!-- 版權與免責宣告 -->
+                <p class="text-[10px] text-slate-400 font-mono tracking-wider uppercase">
+                    Copyright © Liyuchiutiger Gongminshen
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 吉祥物 LiyuChillGuy 懸浮容器 -->
+    <div id="mascot-container" class="fixed bottom-6 left-6 z-50 select-none touch-none" style="width: 90px; height: 90px;">
+        <div class="relative group w-full h-full">
+            <!-- 移動與操作提示標籤 -->
+            <div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] px-2 py-1 rounded shadow-md opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
+                可任意拖曳移動我
+            </div>
+            <!-- 吉祥物圖像 -->
+            <img src="image/LiyuChillGuy.svg" 
+                 alt="LiyuChillGuy" 
+                 id="mascot-img"
+                 class="mascot-interactive w-full h-full object-contain drop-shadow-[0_4px_6px_rgba(0,0,0,0.1)]"
+                 draggable="false" />
+        </div>
+    </div>
+
+    <!-- 腳本處理：細部 UI 互動與吉祥物拖曳 -->
+    <script>
+        // --- 0. 上下午場次切換功能 (雙場次對照 / 上午場 / 下午場) ---
+        const sessionButtons = document.querySelectorAll('.session-btn');
+        const sessionBadges = document.querySelectorAll('.session-badge');
+
+        sessionButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetSession = btn.getAttribute('data-session');
+
+                // 更新按鈕選取樣式 (墨竹青書卷風)
+                sessionButtons.forEach(b => {
+                    b.classList.remove('bg-white', 'text-[#2B5F4B]', 'shadow-2xs', 'font-bold');
+                    b.classList.add('text-slate-600');
+                });
+                btn.classList.add('bg-white', 'text-[#2B5F4B]', 'shadow-2xs', 'font-bold');
+                btn.classList.remove('text-slate-600');
+
+                // 即時動態切換時間軸上的時間文字
+                sessionBadges.forEach(badge => {
+                    const timeTextEl = badge.querySelector('.badge-time-text');
+                    if (timeTextEl && badge.dataset[targetSession]) {
+                        timeTextEl.textContent = badge.dataset[targetSession];
+                    }
+                });
+            });
+        });
+
+        // --- 1. 一鍵摺疊與展開大綱功能 ---
+        const toggleAllBtn = document.getElementById('toggle-all-btn');
+        const allDetails = document.querySelectorAll('.course-details');
+        
+        toggleAllBtn.addEventListener('click', () => {
+            // 檢查當前是否有任一 details 是展開的
+            const anyOpen = Array.from(allDetails).some(detail => detail.open);
+            
+            allDetails.forEach(detail => {
+                detail.open = !anyOpen;
+            });
+
+            // 更新按鈕文字與圖示
+            if (anyOpen) {
+                toggleAllBtn.innerHTML = '<i class="fa-solid fa-expand"></i><span>全部展開</span>';
+            } else {
+                toggleAllBtn.innerHTML = '<i class="fa-solid fa-minimize"></i><span>全部收合</span>';
+            }
+        });
+
+        // 監聽個別 details 的手動切換，動態同步「一鍵控制鈕」狀態
+        allDetails.forEach(detail => {
+            detail.addEventListener('toggle', () => {
+                const anyOpen = Array.from(allDetails).some(d => d.open);
+                if (anyOpen) {
+                    toggleAllBtn.innerHTML = '<i class="fa-solid fa-minimize"></i><span>全部收合</span>';
+                } else {
+                    toggleAllBtn.innerHTML = '<i class="fa-solid fa-expand"></i><span>全部展開</span>';
+                }
+            });
+        });
+
+
+        // --- 2. 吉祥物 LiyuChillGuy 拖曳功能實作 ---
+        const mascot = document.getElementById('mascot-container');
+        let isDragging = false;
+        let startX, startY;
+        let initialX, initialY;
+
+        // 滑鼠事件
+        mascot.addEventListener('mousedown', dragStart);
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', dragEnd);
+
+        // 觸控行動裝置事件
+        mascot.addEventListener('touchstart', dragStart, { passive: true });
+        document.addEventListener('touchmove', drag, { passive: false });
+        document.addEventListener('touchend', dragEnd);
+
+        function dragStart(e) {
+            if (e.type === 'touchstart') {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+            } else {
+                startX = e.clientX;
+                startY = e.clientY;
+            }
+
+            const rect = mascot.getBoundingClientRect();
+            initialX = rect.left;
+            initialY = rect.top;
+
+            mascot.style.bottom = 'auto';
+            mascot.style.right = 'auto';
+            mascot.style.left = `${initialX}px`;
+            mascot.style.top = `${initialY}px`;
+
+            isDragging = true;
+        }
+
+        function drag(e) {
+            if (!isDragging) return;
+
+            if (e.type === 'touchmove') {
+                e.preventDefault();
+            }
+
+            let currentX, currentY;
+            if (e.type === 'touchmove') {
+                currentX = e.touches[0].clientX;
+                currentY = e.touches[0].clientY;
+            } else {
+                currentX = e.clientX;
+                currentY = e.clientY;
+            }
+
+            const dx = currentX - startX;
+            const dy = currentY - startY;
+
+            let nextX = initialX + dx;
+            let nextY = initialY + dy;
+
+            const width = mascot.offsetWidth;
+            const height = mascot.offsetHeight;
+            const maxX = window.innerWidth - width;
+            const maxY = window.innerHeight - height;
+
+            nextX = Math.max(0, Math.min(nextX, maxX));
+            nextY = Math.max(0, Math.min(nextY, maxY));
+
+            mascot.style.left = `${nextX}px`;
+            mascot.style.top = `${nextY}px`;
+        }
+
+        function dragEnd() {
+            isDragging = false;
+        }
+    </script>
+</body>
+</html>
